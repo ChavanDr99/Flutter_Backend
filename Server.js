@@ -5,12 +5,21 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const User = require('./models/User');
 const AddUser =require('./models/Adduser')
-
+const cors=require('cors')
 const app = express();
 const PORT = 3000;
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors({
+    origin: "*",
+  }));
+  
+  app.use((req, res, next) => {
+    req.header("Access-Control-Allow-Origin", "*");
+    req.header("Access-Control-Allow-Headers", "*");
+    next();
+  });
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://DipeshChavan:Deep456@cluster0.y5urtoo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true })
