@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const User = require('./models/User');
+const AddUser =require('./models/Adduser')
 
 const app = express();
 const PORT = 3000;
@@ -43,5 +44,15 @@ app.post('/api/login', async (req, res) => {
     res.status(500).json({ error: 'Error logging in' });
   }
 });
+
+app.post('/api/users', async (req, res) => {
+    try {
+      const { name } = req.body;
+      const newUser = await AddUser.create({ name });
+      res.status(201).json(newUser);
+    } catch (error) {
+      res.status(500).json({ error: 'Error adding user' });
+    }
+  });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
