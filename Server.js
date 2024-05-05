@@ -48,11 +48,16 @@ app.post('/api/login', async (req, res) => {
 app.post('/api/users', async (req, res) => {
     try {
       const { name } = req.body;
+      const existingUser = await AddUser.findOne({ name });
+      if (existingUser) {
+        return res.status(400).json({ error: 'User with this name already exists' });
+      }
       const newUser = await AddUser.create({ name });
       res.status(201).json(newUser);
     } catch (error) {
       res.status(500).json({ error: 'Error adding user' });
     }
   });
+  
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
